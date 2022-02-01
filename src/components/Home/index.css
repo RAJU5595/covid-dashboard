@@ -1,0 +1,30 @@
+.home-bg-container {
+  width: 1440px;
+  height: 3037px;
+  left: 0px;
+  top: 0px;
+  background-color: #161625;
+  margin: auto;
+}
+.home-search-field {
+  width: 824px;
+  height: 72px;
+  margin-top: 64px;
+  margin-left: 308px;
+  background-color: #2f2f43;
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  color: #94a3b8;
+}
+.search-field {
+  background-color: transparent;
+  border: none;
+  height: 24px;
+  width: 105px;
+  flex-grow: 1;
+}
+
+.search-icon {
+  margin-right: 8px;
+}

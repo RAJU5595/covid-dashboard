@@ -1,0 +1,29 @@
+.header-navbar {
+  width: 1440px;
+  height: 80px;
+  left: 0px;
+  top: 0px;
+  background-color: #1e1e30;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-heading {
+  font-weight: 400;
+  font-family: 'bree serif';
+  margin-left: 150px;
+  font-size: 20px;
+  color: #ffffff;
+}
+.india-name {
+  color: #007bff;
+}
+.redirect-names {
+  display: flex;
+  color: #ffffff;
+  margin-right: 150px;
+}
+
+.link-item {
+  margin-right: 91px;
+}
