@@ -28,3 +28,61 @@
 .search-icon {
   margin-right: 8px;
 }
+
+.confirmed-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ff073a;
+}
+.active-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #007bff;
+}
+
+.stats-icon {
+  font-size: 38px;
+}
+.recovered-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #28a745;
+}
+.deceased-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #6c757d;
+}
+.statistics-container {
+  display: flex;
+  align-items: center;
+  margin-top: 112px;
+  justify-content: space-evenly;
+}
+.table-container {
+  background: #1e1e30;
+  border: 1px solid #475569;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
+  border-radius: 12px;
+  margin: auto;
+  min-width: 1146px;
+  margin-top: 106px;
+}
+.table-header-row {
+  font-size: 16px;
+  color: #f8fafc;
+}
+.icon-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.table-row-data {
+  padding: 10px;
+}

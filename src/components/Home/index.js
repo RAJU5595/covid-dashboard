@@ -1,7 +1,9 @@
 import {Component} from 'react'
 import {AiOutlineSearch} from 'react-icons/ai'
+import {FcGenericSortingAsc, FcGenericSortingDesc} from 'react-icons/fc'
 
 import Header from '../Header'
+import TableDataItem from '../TableDataItem'
 import './index.css'
 
 const statesList = [
@@ -152,6 +154,14 @@ const statesList = [
 ]
 
 class Home extends Component {
+  state = {
+    totalConfirmedCases: 0,
+    totalActiveCases: 0,
+    totalRecoveredCases: 0,
+    totalDeceasedCases: 0,
+    statesListData: [],
+  }
+
   componentDidMount() {
     this.getStateWiseData()
   }
@@ -161,37 +171,129 @@ class Home extends Component {
     const response = await fetch(apiUrl)
     const data = await response.json()
     console.log(data)
-    function convertObjectsDataIntoListItemsUsingForInMethod() {
-      const resultList = []
-      const keyNames = Object.keys(data)
-      keyNames.forEach(keyName => {
-        if (data[keyName]) {
-          const {total} = data[keyName]
-          const confirmed = total.confirmed ? total.confirmed : 0
-          const deceased = total.deceased ? total.deceased : 0
-          const recovered = total.recovered ? total.recovered : 0
-          const tested = total.tested ? total.tested : 0
-          const population = data[keyName].meta.population
-            ? data[keyName].meta.population
-            : 0
-          resultList.push({
-            stateCode: keyName,
-            name: statesList.find(state => state.state_code === keyName)
-              .state_name,
-            confirmed,
-            deceased,
-            recovered,
-            tested,
-            population,
-            active: confirmed - (deceased + recovered),
-          })
-        }
-      })
-      return resultList
+    const resultList = []
+    const keyNames = Object.keys(data)
+    keyNames.forEach(keyName => {
+      if (data[keyName]) {
+        const {total} = data[keyName]
+        const confirmed = total.confirmed ? total.confirmed : 0
+        const deceased = total.deceased ? total.deceased : 0
+        const recovered = total.recovered ? total.recovered : 0
+        const tested = total.tested ? total.tested : 0
+        const population = data[keyName].meta.population
+          ? data[keyName].meta.population
+          : 0
+        resultList.push({
+          stateCode: keyName,
+          name: statesList.find(state => state.state_code === keyName),
+          confirmed,
+          deceased,
+          recovered,
+          tested,
+          population,
+          active: confirmed - (deceased + recovered),
+        })
+      }
+    })
+    console.log(resultList)
+    let totalConfirmedCases = 0
+    let totalActiveCases = 0
+    let totalRecoveredCases = 0
+    let totalDeceasedCases = 0
+    function getTheStatistics(item) {
+      totalConfirmedCases += item.confirmed
+      totalActiveCases += item.active
+      totalRecoveredCases += item.recovered
+      totalDeceasedCases += item.deceased
     }
+    resultList.forEach(getTheStatistics)
+    this.setState({
+      totalConfirmedCases,
+      totalActiveCases,
+      totalDeceasedCases,
+      totalRecoveredCases,
+      statesListData: resultList,
+    })
+  }
 
-    const listFormattedDataUsingForInMethod = convertObjectsDataIntoListItemsUsingForInMethod()
-    console.log(listFormattedDataUsingForInMethod[0])
+  renderAllStatesData = () => {
+    const {
+      totalConfirmedCases,
+      totalActiveCases,
+      totalDeceasedCases,
+      totalRecoveredCases,
+    } = this.state
+    return (
+      <div className="statistics-container">
+        <div className="confirmed-container">
+          <p>Confirmed</p>
+          <img
+            src="https://res.cloudinary.com/amst/image/upload/v1639929248/conf_cof3e9.jpg"
+            alt="country wide confirmed cases pic"
+            className="stats-icon"
+          />
+          <p>{totalConfirmedCases}</p>
+        </div>
+        <div className="active-container">
+          <p>Active</p>
+          <img
+            src="https://res.cloudinary.com/amst/image/upload/v1639929248/act_kq7nfx.jpg"
+            className="stats-icon"
+            alt="country wide active cases pic"
+          />
+          <p>{totalActiveCases}</p>
+        </div>
+        <div className="recovered-container">
+          <p>Recovered</p>
+          <img
+            src="https://res.cloudinary.com/amst/image/upload/v1639929248/uyf_ndpqov.jpg"
+            className="stats-icon"
+            alt="country wide recovered cases pic"
+          />
+          <p>{totalRecoveredCases}</p>
+        </div>
+        <div className="deceased-container">
+          <p>Deceased</p>
+          <img
+            src="https://res.cloudinary.com/amst/image/upload/v1639929248/dese_tgak4e.jpg"
+            className="stats-icon"
+            alt="country wide deceased cases pic"
+          />
+          <p>{totalDeceasedCases}</p>
+        </div>
+      </div>
+    )
+  }
+
+  renderTableData = () => {
+    const {statesListData} = this.state
+    return (
+      <table className="table-container">
+        <th className="table-header-row">
+          <tr className="table-row-data">
+            <td>
+              States/UT
+              <button type="button" className="icon-btn">
+                <FcGenericSortingAsc />
+              </button>
+              <button type="button" className="icon-btn">
+                <FcGenericSortingDesc />
+              </button>
+            </td>
+            <td>Confirmed</td>
+            <td>Active</td>
+            <td>Recovered</td>
+            <td>Deceased</td>
+            <td>Population</td>
+          </tr>
+        </th>
+        <tbody>
+          {statesListData.map(eachItem => (
+            <TableDataItem key={eachItem.stateCode} details={eachItem} />
+          ))}
+        </tbody>
+      </table>
+    )
   }
 
   render() {
@@ -206,6 +308,8 @@ class Home extends Component {
             className="search-field"
           />
         </div>
+        {this.renderAllStatesData()}
+        {this.renderTableData()}
       </div>
     )
   }
