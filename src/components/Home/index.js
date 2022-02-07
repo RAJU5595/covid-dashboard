@@ -268,31 +268,54 @@ class Home extends Component {
   renderTableData = () => {
     const {statesListData} = this.state
     return (
-      <table className="table-container">
-        <th className="table-header-row">
-          <tr className="table-row-data">
-            <td>
-              States/UT
-              <button type="button" className="icon-btn">
-                <FcGenericSortingAsc />
-              </button>
-              <button type="button" className="icon-btn">
-                <FcGenericSortingDesc />
-              </button>
-            </td>
-            <td>Confirmed</td>
-            <td>Active</td>
-            <td>Recovered</td>
-            <td>Deceased</td>
-            <td>Population</td>
-          </tr>
-        </th>
-        <tbody>
-          {statesListData.map(eachItem => (
-            <TableDataItem key={eachItem.stateCode} details={eachItem} />
-          ))}
-        </tbody>
-      </table>
+      <div className="all-states-table" testid="stateWiseCovidDataTable">
+        <div className="table-header">
+          <div className="state-name-heading">
+            <button
+              className="order"
+              type="button"
+              testid="ascendingSort"
+              onClick={this.whenAscendingSortButtonClicked}
+            >
+              <FcGenericSortingAsc className="order-icon" />
+            </button>
+            <p className="table-header-title">States/UT</p>
+            <button
+              className="order"
+              type="button"
+              testid="descendingSort"
+              onClick={this.whenDescendingSortButtonClicked}
+            >
+              <FcGenericSortingDesc className="order-icon" />
+            </button>
+          </div>
+          <div className="table-header-container">
+            <p className="table-header-title">Confirmed</p>
+          </div>
+          <div className="table-header-container">
+            <p className="table-header-title">Active</p>
+          </div>
+          <div className="table-header-container">
+            <p className="table-header-title">Recovered</p>
+          </div>
+          <div className="table-header-container">
+            <p className="table-header-title">Deceased</p>
+          </div>
+          <div className="table-header-container">
+            <p className="table-header-title">Population</p>
+          </div>
+          <div className="table-header-container">
+            <p className="table-header-title">Others</p>
+          </div>
+        </div>
+        <div className="state-wise-data-list-container">
+          <ul className="other-tables">
+            {statesListData.map(eachItem => (
+              <TableDataItem key={eachItem.stateCode} details={eachItem} />
+            ))}
+          </ul>
+        </div>
+      </div>
     )
   }
 
