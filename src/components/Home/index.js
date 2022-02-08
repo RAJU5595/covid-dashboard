@@ -1,9 +1,12 @@
 import {Component} from 'react'
 import {AiOutlineSearch} from 'react-icons/ai'
 import {FcGenericSortingAsc, FcGenericSortingDesc} from 'react-icons/fc'
+import Loader from 'react-loader-spinner'
 
 import Header from '../Header'
 import TableDataItem from '../TableDataItem'
+import Footer from '../Footer'
+import SearchResultItem from '../SearchResultItem'
 import './index.css'
 
 const statesList = [
@@ -160,17 +163,39 @@ class Home extends Component {
     totalRecoveredCases: 0,
     totalDeceasedCases: 0,
     statesListData: [],
+    searchInput: '',
+    filteredSearchList: [],
+    isLoading: true,
   }
 
   componentDidMount() {
     this.getStateWiseData()
   }
 
+  AscendingSortButtonClicked = () => {
+    const {statesListData} = this.state
+    const sortedList = statesListData.sort((a, b) => {
+      const x = a.stateName.toUpperCase()
+      const y = b.stateName.toUpperCase()
+      return x > y ? 1 : -1
+    })
+    this.setState({statesListData: sortedList})
+  }
+
+  DescendingSortButtonClicked = () => {
+    const {statesListData} = this.state
+    const sortedList = statesListData.sort((a, b) => {
+      const x = a.stateName.toUpperCase()
+      const y = b.stateName.toUpperCase()
+      return x < y ? 1 : -1
+    })
+    this.setState({statesListData: sortedList})
+  }
+
   getStateWiseData = async () => {
     const apiUrl = 'https://apis.ccbp.in/covid19-state-wise-data'
     const response = await fetch(apiUrl)
     const data = await response.json()
-    console.log(data)
     const resultList = []
     const keyNames = Object.keys(data)
     keyNames.forEach(keyName => {
@@ -195,7 +220,16 @@ class Home extends Component {
         })
       }
     })
-    console.log(resultList)
+    const newResultList = resultList.map(eachItem => ({
+      stateCode: eachItem.stateCode,
+      stateName: eachItem.name !== undefined ? eachItem.name.state_name : '',
+      confirmed: eachItem.confirmed,
+      deceased: eachItem.deceased,
+      recovered: eachItem.recovered,
+      tested: eachItem.tested,
+      population: eachItem.population,
+      active: eachItem.active,
+    }))
     let totalConfirmedCases = 0
     let totalActiveCases = 0
     let totalRecoveredCases = 0
@@ -206,13 +240,14 @@ class Home extends Component {
       totalRecoveredCases += item.recovered
       totalDeceasedCases += item.deceased
     }
-    resultList.forEach(getTheStatistics)
+    newResultList.forEach(getTheStatistics)
     this.setState({
       totalConfirmedCases,
       totalActiveCases,
       totalDeceasedCases,
       totalRecoveredCases,
-      statesListData: resultList,
+      statesListData: newResultList,
+      isLoading: false,
     })
   }
 
@@ -275,7 +310,7 @@ class Home extends Component {
               className="order"
               type="button"
               testid="ascendingSort"
-              onClick={this.whenAscendingSortButtonClicked}
+              onClick={this.AscendingSortButtonClicked}
             >
               <FcGenericSortingAsc className="order-icon" />
             </button>
@@ -284,7 +319,7 @@ class Home extends Component {
               className="order"
               type="button"
               testid="descendingSort"
-              onClick={this.whenDescendingSortButtonClicked}
+              onClick={this.DescendingSortButtonClicked}
             >
               <FcGenericSortingDesc className="order-icon" />
             </button>
@@ -304,9 +339,6 @@ class Home extends Component {
           <div className="table-header-container">
             <p className="table-header-title">Population</p>
           </div>
-          <div className="table-header-container">
-            <p className="table-header-title">Others</p>
-          </div>
         </div>
         <div className="state-wise-data-list-container">
           <ul className="other-tables">
@@ -319,7 +351,50 @@ class Home extends Component {
     )
   }
 
+  onChangeSearchInput = event => {
+    const searchInputValue = event.target.value
+    const searchResultsList = statesList.filter(data =>
+      data.state_name.toLowerCase().includes(searchInputValue.toLowerCase()),
+    )
+    return this.setState({
+      searchInput: searchInputValue,
+      filteredSearchList: searchResultsList,
+    })
+  }
+
+  showSearchList = () => {
+    const {filteredSearchList} = this.state
+
+    return (
+      <ul
+        className="search-result-container"
+        testid="searchResultsUnorderedList"
+      >
+        {filteredSearchList.map(each => (
+          <SearchResultItem
+            key={each.state_code}
+            statename={each.state_name}
+            statecode={each.state_code}
+            id={each.state_code}
+          />
+        ))}
+      </ul>
+    )
+  }
+
+  renderLoadingView = () => (
+    <div
+      className="products-details-loader-container loader-container"
+      testid="homeRouteLoader"
+    >
+      <Loader type="TailSpin" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
   render() {
+    const {searchInput, filteredSearchList, isLoading} = this.state
+    const showSearchList =
+      filteredSearchList.length === 0 ? '' : this.showSearchList()
     return (
       <div className="home-bg-container">
         <Header />
@@ -329,10 +404,20 @@ class Home extends Component {
             type="search"
             placeholder="Enter the state"
             className="search-field"
+            onChange={this.onChangeSearchInput}
+            value={searchInput}
           />
         </div>
-        {this.renderAllStatesData()}
-        {this.renderTableData()}
+        {searchInput.length > 0 ? showSearchList : ''}
+        {isLoading ? (
+          this.renderLoadingView()
+        ) : (
+          <>
+            {this.renderAllStatesData()}
+            {this.renderTableData()}
+          </>
+        )}
+        <Footer />
       </div>
     )
   }

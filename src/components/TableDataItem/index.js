@@ -9,13 +9,9 @@ const TableDataItem = props => {
     deceased,
     population,
     recovered,
-    name,
+    stateName,
     stateCode,
   } = details
-  let stateName = ''
-  if (name !== undefined) {
-    stateName = name.state_name
-  }
   return (
     <>
       <li className="list-all-cases ">

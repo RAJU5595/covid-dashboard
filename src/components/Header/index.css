@@ -15,6 +15,10 @@
   font-size: 20px;
   color: #ffffff;
 }
+.link-header-heading {
+  text-decoration: none;
+  cursor: pointer;
+}
 .india-name {
   color: #007bff;
 }
@@ -26,4 +30,7 @@
 
 .link-item {
   margin-right: 91px;
+  text-decoration: none;
+  color: #ffffff;
+  cursor: pointer;
 }

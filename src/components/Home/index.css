@@ -23,6 +23,7 @@
   height: 24px;
   width: 105px;
   flex-grow: 1;
+  color: #ffffff;
 }
 
 .search-icon {
@@ -92,6 +93,7 @@
   border: none;
   outline: none;
   font-size: 20px;
+  cursor: pointer;
 }
 
 .table-header-title-1 {
@@ -112,12 +114,12 @@
   font-size: 16px;
   line-height: 24px;
   color: #f8fafc;
-  background-color: #94a3b8;
-  margin-right: 10px;
+  text-align: right;
 }
 
 .table-header-container {
   width: 22%;
+  padding: 10px;
 }
 
 .table-header-title {
@@ -141,6 +143,7 @@
 .all-states-table {
   width: 95%;
   margin: auto;
+  margin-top: 106px;
   background: #1e1e30;
   border: 2px solid #a5c2eb;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
@@ -162,4 +165,19 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+}
+
+.search-result-container {
+  list-style-type: none;
+  width: 57.22%;
+  margin: auto;
+  margin-bottom: 64px;
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 170px;
 }

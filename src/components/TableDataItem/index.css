@@ -35,6 +35,8 @@
   font-size: 14px;
   line-height: 24px;
   color: #ff073a;
+  text-align: right;
+  margin-right: 15px;
 }
 
 .active-home {
@@ -44,6 +46,8 @@
   font-size: 14px;
   line-height: 24px;
   color: #007bff;
+  text-align: right;
+  margin-right: 15px;
 }
 
 .recovered-home {
@@ -53,6 +57,8 @@
   font-size: 14px;
   line-height: 24px;
   color: #28a745;
+  text-align: right;
+  margin-right: 15px;
 }
 
 .deceased-home {
@@ -62,6 +68,8 @@
   font-size: 14px;
   line-height: 24px;
   color: #6c757d;
+  text-align: right;
+  margin-right: 15px;
 }
 .population-home {
   font-family: Roboto;
@@ -70,4 +78,6 @@
   font-size: 14px;
   line-height: 24px;
   color: #94a3b8;
+  text-align: right;
+  margin-right: 15px;
 }
